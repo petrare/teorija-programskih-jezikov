@@ -1,0 +1,3 @@
+LET g = (FUN y -> (FST y > SND y)) IN MATCH [] WITH
+| [] -> TRUE :: []
+| x :: xs -> g

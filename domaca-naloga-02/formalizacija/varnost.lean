@@ -7,7 +7,6 @@ inductive ty : Type
 | prod : ty -> ty -> ty
 | list : ty -> ty
 
-
 def ident := string
 
 
@@ -342,7 +341,72 @@ begin
         cases Hof,
         apply Hof_a_2
     },
-    repeat {sorry},
+    case step.pair1 {
+        cases Hof,
+        apply of.pair,
+        apply Hstep_ih Hof_a,
+        exact Hof_a_1,
+    },
+    case step.pair2 {
+        cases Hof,
+        apply of.pair,
+        exact Hof_a,
+        apply Hstep_ih Hof_a_1,
+    },
+    case step.fst_step{
+        cases Hof,
+        apply of.fst,
+        apply Hstep_ih Hof_a,
+    },
+    case step.fst_beta{
+        cases Hof,
+        cases Hof_a,
+        exact Hof_a_a,
+    },
+    case step.snd_step{
+        cases Hof,
+        apply of.snd,
+        apply Hstep_ih Hof_a,
+    },
+    case step.snd_beta{
+        cases Hof,
+        cases Hof_a,
+        exact Hof_a_a_1,
+    },
+    case step.cons1{
+        cases Hof,
+        apply of.cons,
+        apply Hstep_ih Hof_a,
+        exact Hof_a_1,
+    },
+    case step.cons2{
+        cases Hof,
+        apply of.cons,
+        exact Hof_a,
+        apply Hstep_ih Hof_a_1,
+    },
+    case step.list_match_step{
+        cases Hof,
+        apply of.list_match,
+        apply Hstep_ih Hof_a,
+        exact Hof_a_1,
+        exact Hof_a_2,
+    },
+    case step.list_match_nil{
+        cases Hof,
+        exact Hof_a_1,
+    },
+    case step.list_match_cons{
+        cases Hof,
+        cases Hof_a,
+        apply substitution,
+        assumption,
+        apply substitution,
+        apply weakening,
+        assumption,
+        exact Hof_a_2,
+    },
+
 end
 
 
@@ -433,5 +497,5 @@ begin
             exact (step.if_then_else h_h),
         }
   },
-  repeat {sorry},
+repeat {sorry},
 end
